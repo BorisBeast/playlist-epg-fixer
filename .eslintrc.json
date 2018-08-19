@@ -1,0 +1,12 @@
+{
+  "extends": "standard",
+  "rules": {
+    "semi": ["error", "always"],
+    "space-before-function-paren": "off",
+    "padded-blocks": "off",
+    "space-in-parens": "off",
+    "no-multi-spaces": ["error", { "ignoreEOLComments": true }],
+    "no-multiple-empty-lines": ["error", { "max": 5 }],
+    "no-shadow": "error"
+  }
+}
