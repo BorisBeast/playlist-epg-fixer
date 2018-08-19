@@ -2,8 +2,10 @@ import fs from 'fs';
 import { find } from 'lodash';
 import { promisify } from 'util';
 import XmlReader from 'xml-reader';
+import FuzzyMatching from 'fuzzy-matching';
 
 const readFile = promisify(fs.readFile);
+const writeFile = promisify(fs.writeFile);
 
 let originalM3u = '';
 const channelNames = [];
@@ -25,20 +27,32 @@ readFile('./tv_channels.m3u', 'utf8')
     const reader = XmlReader.create({ stream: true, parentNodes: false });
 
     reader.on('tag:channel', tag => {
-    const id = tag.attributes.id;
-    const displayNameTag = find(tag.children, ['name', 'display-name']);
-    const displayName = find(displayNameTag.children, ['type', 'text']).value;
+      const id = tag.attributes.id;
+      const displayNameTag = find(tag.children, ['name', 'display-name']);
+      const displayName = find(displayNameTag.children, ['type', 'text']).value;
       epgChannels.push({ id, displayName });
     });
 
     const donePromise = new Promise(resolve => {
       reader.on('done', resolve);
-  });
+    });
 
-  reader.parse(data);
+    reader.parse(data);
 
     return donePromise;
   })
   .then(() => {
     console.log('Channels from epg: DONE');
-});
+    const epgChannelNames = epgChannels.map(channel => channel.displayName);
+
+    const fm = new FuzzyMatching(channelNames);
+    const matches = [];
+    epgChannelNames.forEach(channel => {
+      matches.push({channel, match: fm.get(channel).value});
+    });
+
+    return writeFile('./output.json', JSON.stringify(matches));
+  })
+  .then(() => {
+    console.log('Write matches: DONE');
+  });
