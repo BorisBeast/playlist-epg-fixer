@@ -20,6 +20,10 @@
           }
         }
       ]
+    ],
+    "plugins": [
+      "transform-es2015-spread",
+      "transform-object-rest-spread"
     ]
   },
   "dependencies": {
@@ -29,6 +33,8 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-plugin-transform-es2015-spread": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "eslint": "^5.4.0",
     "eslint-config-standard": "^11.0.0",
