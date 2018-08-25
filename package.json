@@ -6,7 +6,8 @@
   "private": true,
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "babel-node index"
+    "start": "babel-node -- index",
+    "m3u": "babel-node -- index -f m3u -i \"./output.json\" -o \"./output.m3u\""
   },
   "author": "Boris Jovanovic",
   "license": "ISC",
@@ -27,6 +28,7 @@
     ]
   },
   "dependencies": {
+    "command-line-args": "^5.0.2",
     "fuzzy-matching": "^0.4.3",
     "lodash": "^4.17.10",
     "xml-reader": "^2.4.3"
